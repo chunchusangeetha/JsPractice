@@ -1,15 +1,14 @@
-export const apiUrl = `https://jsonplaceholder.typicode.com/users`;
+const apiUrl = `https://jsonplaceholder.typicode.com/users`;
 let userList = [];
 let currentUserId = null;
 
-export async function getuserlist() {
-
+async function getuserlist() {
     const response = await fetch(apiUrl);
     userList = await response.json();
     console.log("response", response, userList);
     rerender()
 }
-export async function rerender() {
+async function rerender() {
     const userdisplay = document.getElementById("useres");
     userdisplay.innerHTML = "";
     userList.forEach(element => {
@@ -22,7 +21,7 @@ export async function rerender() {
 }
 getuserlist();
 
-export async function handlesubmit(e) {
+async function handlesubmit(e) {
     e.preventDefault();
     console.log("wellcome..");
     const name = document.getElementById('name').value;
@@ -49,13 +48,13 @@ export async function handlesubmit(e) {
     console.log(userList, 'afteraddres')
 }
 
-export function editUser(id, name, email) {
+function editUser(id, name, email) {
     currentUserId = id;
     console.log(id, name, email, 'edit');
     document.getElementById("edit-name").value = name;
     document.getElementById("edit-email").value = email;
 }
-export async function handleupdate(e) {
+async function handleupdate(e) {
     e.preventDefault();
     const updatedName = document.getElementById('edit-name').value;
     const updatedEmail = document.getElementById('edit-email').value;
@@ -74,11 +73,11 @@ export async function handleupdate(e) {
         email: updatedEmail
     };
     userList = userList.map(user => user.id === currentUserId ? updatedUser : user);
-    document.getElementById('name').value = "";
-    document.getElementById('email').value = "";
+    document.getElementById('edit-name').value = "";
+    document.getElementById('edit-email').value = "";
     rerender();
 }
-export async function handleDelete(id) {
+async function handleDelete(id) {
     const response = await fetch(`${apiUrl}/${id}`, {
         method: 'DELETE'
     });
